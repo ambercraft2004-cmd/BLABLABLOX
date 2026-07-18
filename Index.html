@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLABLABLOX - Premium Bloxfruit Shop</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Padauk:wght@400;700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-pink: #ff007f; /* Neon Pink */
+            --secondary-purple: #9d4edd; /* Cyber Purple */
+            --dark-bg: #0d0b14; /* Deep Purple Dark */
+            --card-bg: rgba(29, 23, 41, 0.7);
+        }
+
+        body {
+            font-family: 'Poppins', 'Padauk', sans-serif;
+            background-color: var(--dark-bg);
+            color: #ffffff;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(255, 0, 127, 0.12) 0%, transparent 70%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .welcome-container {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 40px;
+            border-radius: 24px;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 0, 127, 0.2);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6),
+                        0 0 30px rgba(255, 0, 127, 0.15);
+            max-width: 450px;
+            width: 90%;
+            animation: fadeIn 1.2s ease-out;
+        }
+
+        .character-img-wrapper {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 25px auto;
+            border-radius: 50%;
+            padding: 5px;
+            background: linear-gradient(45deg, var(--primary-pink), var(--secondary-purple));
+            box-shadow: 0 0 25px rgba(255, 0, 127, 0.4);
+            animation: floatAnimation 4s ease-in-out infinite;
+        }
+
+        .character-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            background-color: #1d1729;
+        }
+
+        .shop-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            background: linear-gradient(45deg, #ffffff, #f472b6, var(--primary-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(255, 0, 127, 0.2);
+        }
+
+        .shop-subtitle {
+            font-size: 0.95rem;
+            color: #cbd5e1;
+            margin-bottom: 35px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .enter-btn {
+            font-family: 'Poppins', 'Padauk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffffff;
+            background: linear-gradient(90deg, var(--primary-pink), #e0115f);
+            padding: 14px 45px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 0 20px rgba(255, 0, 127, 0.4);
+            outline: none;
+        }
+
+        .enter-btn:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 0 35px rgba(255, 0, 127, 0.7),
+                        0 0 15px rgba(157, 78, 221, 0.4);
+            background: linear-gradient(90deg, #e0115f, var(--secondary-purple));
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes floatAnimation {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+        }
+
+        .fade-out-exit {
+            animation: fadeOutExit 0.6s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeOutExit {
+            to {
+                opacity: 0;
+                transform: scale(0.9) translateY(-20px);
+                filter: blur(10px);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="welcome-container" id="welcomeBox">
+        <div class="character-img-wrapper">
+            <img class="character-img" src="https://i.ibb.co/1GGrG7rh/file-0000000063e87206890ca6d0c7b724f6.png" alt="BLABLABLOX Mascot">
+        </div>
+
+        <h1 class="shop-title">BLABLA</h1>
+        <p class="shop-subtitle">PREMIUM BLOX FRUIT MARKET</p>
+
+        <button class="enter-btn" id="enterBtn" onclick="enterShop()">
+            ဝင်ရောက်မည်
+        </button>
+    </div>
+
+    <script>
+        function enterShop() {
+            const welcomeBox = document.getElementById('welcomeBox');
+            welcomeBox.classList.add('fade-out-exit');
+            setTimeout(() => {
+                window.location.href = "shop.html"; 
+            }, 600);
+        }
+    </script>
+</body>
+</html>
