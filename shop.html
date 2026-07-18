@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLABLABLOX - Main Shop</title>
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Padauk:wght@400;700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-pink: #ff007f;
+            --secondary-purple: #9d4edd;
+            --dark-bg: #0d0b14;
+            --card-bg: #1d1729;
+            --nav-bg: #15101f;
+            --text-gray: #94a3b8;
+            --success-green: #00e676;
+        }
+        body {
+            font-family: 'Poppins', 'Padauk', sans-serif;
+            background-color: var(--dark-bg);
+            color: #ffffff;
+            padding-bottom: 90px;
+            min-height: 100vh;
+        }
+        header {
+            background: linear-gradient(to bottom, #15101f, transparent);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 0, 127, 0.15);
+        }
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #fff, var(--primary-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+        .user-status-bar {
+            background: rgba(255, 0, 127, 0.05);
+            border-bottom: 1px solid rgba(255, 0, 127, 0.1);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+        .user-balance { color: var(--success-green); font-weight: 700; }
+        .filter-container { display: flex; gap: 10px; padding: 15px; overflow-x: auto; white-space: nowrap; }
+        .filter-container::-webkit-scrollbar { display: none; }
+        .filter-btn {
+            background: var(--card-bg); color: #fff; border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 8px 18px; border-radius: 20px; font-size: 0.9rem; cursor: pointer; transition: all 0.3s ease;
+        }
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--primary-pink); color: #ffffff; font-weight: 700;
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.4); border-color: var(--primary-pink);
+        }
+        .shop-container, .section-container { padding: 15px; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .section-container { display: block; max-width: 600px; margin: 0 auto; }
+        .account-card {
+            background: var(--card-bg); border-radius: 16px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4); transition: transform 0.3s ease, border-color 0.3s ease;
+            position: relative; padding: 20px 15px 15px 15px;
+        }
+        .account-card:hover { transform: translateY(-5px); border-color: var(--primary-pink); box-shadow: 0 5px 15px rgba(255, 0, 127, 0.2); }
+        .card-header-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 12px; }
+        .acc-title { font-size: 1.1rem; font-weight: 700; color: #ffffff; flex: 1; }
+        .level-badge { background: rgba(255, 0, 127, 0.15); border: 1px solid var(--primary-pink); color: #ffffff; padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; }
+        .acc-features { list-style: none; margin-bottom: 15px; min-height: 85px; }
+        .acc-features li { font-size: 0.85rem; color: var(--text-gray); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+        .acc-features li i { color: var(--primary-pink); font-size: 0.8rem; }
+        .price-row { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 12px; }
+        .price-text { font-size: 1.25rem; font-weight: 700; color: var(--primary-pink); }
+        .buy-btn { background: linear-gradient(90deg, var(--primary-pink), #e0115f); color: #ffffff; border: none; padding: 8px 18px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .buy-btn:hover { box-shadow: 0 0 12px rgba(255, 0, 127, 0.5); transform: scale(1.05); }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; background-color: var(--nav-bg); border-top: 1px solid rgba(255, 0, 127, 0.2); display: flex; justify-content: space-around; align-items: center; z-index: 100; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-gray); text-decoration: none; font-size: 0.75rem; width: 25%; height: 100%; cursor: pointer; transition: 0.3s; }
+        .nav-item i { font-size: 1.3rem; margin-bottom: 4px; }
+        .nav-item.active { color: var(--primary-pink); text-shadow: 0 0 10px rgba(255, 0, 127, 0.4); }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(13, 11, 20, 0.85); backdrop-filter: blur(8px); z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: all 0.4s ease; }
+        .modal-overlay.open { opacity: 1; pointer-events: auto; }
+        .auth-box { background: var(--card-bg); border: 1px solid rgba(255, 0, 127, 0.3); box-shadow: 0 0 25px rgba(255, 0, 127, 0.25); width: 90%; max-width: 380px; border-radius: 20px; padding: 30px 24px; position: relative; transform: translateY(-30px); transition: all 0.4s ease; }
+        .modal-overlay.open .auth-box { transform: translateY(0); }
+        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; color: var(--text-gray); cursor: pointer; }
+        .close-modal:hover { color: var(--primary-pink); }
+        .auth-title { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; font-weight: 800; text-align: center; margin-bottom: 25px; letter-spacing: 1px; }
+        .auth-form { display: none; }
+        .auth-form.active { display: block; }
+        .input-group { margin-bottom: 18px; position: relative; }
+        .input-group i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-gray); }
+        .auth-input, select { width: 100%; background: #15101f; border: 1px solid rgba(255, 255, 255, 0.1); padding: 12px 12px 12px 42px; border-radius: 10px; color: #fff; font-size: 0.9rem; outline: none; }
+        select { padding-left: 15px; appearance: none; }
+        .auth-input:focus, select:focus { border-color: var(--primary-pink); box-shadow: 0 0 10px rgba(255, 0, 127, 0.3); }
+        .submit-btn { width: 100%; background: linear-gradient(90deg, var(--primary-pink), #e0115f); color: #ffffff; border: none; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 1rem; cursor: pointer; margin-top: 10px; }
+        .auth-footer { text-align: center; margin-top: 20px; font-size: 0.8rem; color: var(--text-gray); }
+        .auth-footer a { color: var(--primary-pink); text-decoration: none; font-weight: 700; }
+        .info-panel { background: #15101f; border: 1px solid rgba(255, 0, 127, 0.2); border-radius: 12px; padding: 15px; margin-bottom: 20px; font-size: 0.9rem; }
+        .info-panel p { margin-bottom: 5px; color: var(--text-gray); }
+        .info-panel strong { color: #fff; }
+        .notice-text { color: #ffeb3b; font-weight: bold; font-size: 0.85rem; }
+        .file-label { display: flex; align-items: center; justify-content: center; gap: 10px; background: #15101f; border: 1px dashed rgba(255, 255, 255, 0.2); padding: 15px; border-radius: 10px; cursor: pointer; color: var(--text-gray); font-size: 0.9rem; }
+        .file-label:hover { border-color: var(--primary-pink); color: #fff; }
+        .history-card { background: var(--card-bg); border-left: 4px solid var(--primary-pink); padding: 15px; border-radius: 8px; margin-bottom: 12px; }
+        .history-header { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.85rem; color: var(--text-gray); }
+        .cred-box { background: #0d0b14; padding: 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05); margin-top: 8px; font-family: monospace; }
+        .cred-box span { color: var(--success-green); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-text">BLABLABLOX</div>
+    </header>
+
+    <div class="user-status-bar">
+        <div><i class="fa-solid fa-circle-user"></i> <span id="displayUser">Guest User</span></div>
+        <div>ဂိမ်းဒင်္ဂါးလက်ကျန်: <span class="user-balance" id="displayBalance">0</span> ks</div>
+    </div>
+
+    <!-- ==================== PAGE 1: MAIN SHOP ==================== -->
+    <div id="page-home">
+        <div class="filter-container">
+            <button class="filter-btn active" onclick="filterData('all')">အားလုံး</button>
+            <button class="filter-btn" onclick="filterData('normal')">အခြေခံ / ရာထူးသင့်</button>
+            <button class="filter-btn" onclick="filterData('fruit')">Mythical / Fruit စုံ</button>
+            <button class="filter-btn" onclick="filterData('v4')">Race V4 T10</button>
+        </div>
+
+        <main class="shop-container" id="shopGrid">
+            <div style="text-align:center; grid-column: 1/-1; padding: 40px; color: var(--text-gray);">
+                <i class="fa-solid fa-spinner fa-spin" style="font-size:2rem; margin-bottom:10px; color:var(--primary-pink);"></i>
+                <p>ဆိုင်ခန်းဒေတာများကို ဖွင့်နေသည်...</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- ==================== PAGE 2: TOPUP WALLET ==================== -->
+    <div id="page-topup" style="display: none;" class="section-container">
+        <h2 style="font-family:'Orbitron'; margin: 15px 0; color:var(--primary-pink);">TOPUP WALLET</h2>
+        <div class="info-panel">
+            <p class="notice-text"><i class="fa-solid fa-circle-exclamation"></i> ငွေဖြည့်ပြီးလျှင် အတည်ပြုရန် ၅ မိနစ်ခန့် စောင့်ဆိုင်းပေးပါရန်။</p>
+            <p style="margin-top: 10px;"><strong>K Pay & Wave Money Details:</strong></p>
+            <p>ဖုန်းနံပါတ် - <strong>09671811551</strong></p>
+            <p>အကောင့်အမည် - <strong>Bhone Pyae Shan</strong></p>
+        </div>
+        <form id="topupForm">
+            <div class="input-group">
+                <select id="paymentMethod" required>
+                    <option value="" disabled selected>ငွေဖြည့်မည့်အမျိုးအစား ရွေးချယ်ရန် (K Pay / Wave)</option>
+                    <option value="KBZPay">KBZ Pay</option>
+                    <option value="WaveMoney">Wave Money</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <input type="number" id="topupAmount" class="auth-input" placeholder="ထည့်မည့်ပမာဏ (ks)" required min="100" style="padding-left: 15px;">
+            </div>
+            <div class="input-group">
+                <label class="file-label">
+                    <i class="fa-solid fa-image"></i> <span id="file-status">ငွေလွှဲပြေစာတင်ရန် (Upload Screenshot)</span>
+                    <input type="file" id="receiptFile" accept="image/*" required style="display: none;">
+                </label>
+            </div>
+            <button type="submit" class="submit-btn">ငွေဖြည့်ရန် တင်ပြမည်</button>
+        </form>
+    </div>
+
+    <!-- ==================== PAGE 3: ORDER HISTORY ==================== -->
+    <div id="page-history" style="display: none;" class="section-container">
+        <h2 style="font-family:'Orbitron'; margin: 15px 0; color:var(--primary-pink);">ORDER HISTORY</h2>
+        <p style="font-size: 0.8rem; color: var(--text-gray); margin-bottom: 15px;">* ဝယ်ယူထားသော အကောင့်များကို ၃ ရက်တိတိ ပြသပေးထားမည် ဖြစ်သည်။</p>
+        <div id="historyLog"></div>
+    </div>
+
+    <!-- ==================== AUTH POPUP MODAL ==================== -->
+    <div class="modal-overlay" id="authModal">
+        <div class="auth-box">
+            <span class="close-modal" onclick="toggleAuthModal(false)">&times;</span>
+            <div class="auth-title" id="authTitle">USER LOGIN</div>
+            
+            <form id="loginForm" class="auth-form active">
+                <div class="input-group">
+                    <input type="text" id="loginUser" class="auth-input" placeholder="Username" required><i class="fa-solid fa-user"></i>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="loginPass" class="auth-input" placeholder="Password" required><i class="fa-solid fa-lock"></i>
+                </div>
+                <button type="submit" class="submit-btn">လော့ဂ်အင်ဝင်မည်</button>
+                <div class="auth-footer">အကောင့်မရှိသေးဘူးလား? <a href="#" onclick="switchForm('register')">Register ပြုလုပ်ရန်</a></div>
+            </form>
+
+            <form id="registerForm" class="auth-form">
+                <div class="input-group">
+                    <input type="text" id="regUser" class="auth-input" placeholder="အသုံးပြုမည့် Username" required><i class="fa-solid fa-user-tag"></i>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="regPass" class="auth-input" placeholder="Password အသစ်" required><i class="fa-solid fa-lock"></i>
+                </div>
+                <button type="submit" class="submit-btn">အကောင့်သစ်ဖွင့်မည်</button>
+                <div class="auth-footer">အကောင့်ရှိပြီးသားလား? <a href="#" onclick="switchForm('login')">Login ပြန်ဝင်ရန်</a></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== DISP CREDIT MODAL ==================== -->
+    <div class="modal-overlay" id="creditModal">
+        <div class="auth-box" style="text-align: center;">
+            <div class="auth-title" style="color: var(--success-green);">ဝယ်ယူမှု အောင်မြင်သည်!</div>
+            <p style="font-size:0.9rem; margin-bottom: 15px;">သင့်အကောင့်ရဲ့ ရယူရန် အချက်အလက်များ-</p>
+            <div class="cred-box" style="font-size: 1.1rem; border: 1px solid var(--success-green);">
+                <p>ID: <span id="popUser"></span></p>
+                <p>PW: <span id="popPass"></span></p>
+            </div>
+            <p style="font-size:0.75rem; color:var(--text-gray); margin-top:10px;">* ဤအချက်အလက်ကို History ထဲတွင် ၃ ရက်တိုင် ပြန်ကြည့်နိုင်ပါသည်။</p>
+            <button class="submit-btn" onclick="document.getElementById('creditModal').classList.remove('open')">သိရှိပါပြီ</button>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <div class="nav-item active" id="btn-home" onclick="changePage('home')"><i class="fa-solid fa-house"></i><span>Home</span></div>
+        <div class="nav-item" id="btn-profile" onclick="handleProfileClick()"><i class="fa-solid fa-user"></i><span>Profile</span></div>
+        <div class="nav-item" id="btn-topup" onclick="changePage('topup')"><i class="fa-solid fa-wallet"></i><span>Topup</span></div>
+        <div class="nav-item" id="btn-history" onclick="changePage('history')"><i class="fa-solid fa-clock-rotate-left"></i><span>History</span></div>
+    </nav>
+
+    <!-- ==================== FIREBASE BACKEND INTEGRATION ==================== -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, setDoc, getDoc, updateDoc, arrayUnion, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBKwIBavhD4Hdn10vdUVUAHMz8Pds1hwR0",
+            authDomain: "blabla-78972.firebaseapp.com",
+            projectId: "blabla-78972",
+            storageBucket: "blabla-78972.firebasestorage.app",
+            messagingSenderId: "1012793481550",
+            appId: "1:1012793481550:web:894ddbb87c7c104e75e61f",
+            measurementId: "G-JZZXY3D9S9"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let currentUser = localStorage.getItem('sessionUser') || null;
+        let userBalance = 0;
+        let allAccounts = []; 
+        let currentFilter = 'all';
+
+        async function fetchAndUpdateUI() {
+            if (currentUser) {
+                try {
+                    const userRef = doc(db, "users", currentUser);
+                    const userSnap = await getDoc(userRef);
+                    if (userSnap.exists()) {
+                        userBalance = userSnap.data().balance || 0;
+                        document.getElementById('displayUser').innerText = currentUser;
+                        document.getElementById('displayBalance').innerText = userBalance;
+                        document.getElementById('btn-profile').querySelector('span').innerText = "Logout";
+                    }
+                } catch (e) { console.error("Error fetching balance:", e); }
+            } else {
+                document.getElementById('displayUser').innerText = "Guest User";
+                document.getElementById('displayBalance').innerText = "0";
+                document.getElementById('btn-profile').querySelector('span').innerText = "Profile";
+                userBalance = 0;
+            }
+            renderHistory();
+        }
+
+        // Realtime Database Sync
+        onSnapshot(collection(db, "accounts"), (snapshot) => {
+            allAccounts = [];
+            snapshot.forEach((doc) => {
+                allAccounts.push({ id: doc.id, ...doc.data() });
+            });
+            renderShop(); 
+        });
+
+        // ဆိုင်ခန်း UI အတွင်း အကောင့်စာရင်းသစ်များအားလုံးကို တွက်ချက်ပြသခြင်း
+        function renderShop() {
+            const shopGrid = document.getElementById('shopGrid');
+            shopGrid.innerHTML = '';
+
+            // မင်းပေးထားတဲ့ အကောင့်စာရင်းအသစ် ၁၇ မျိုး
+            const menuTemplates = [
+                // Normal / အခြေခံ
+                { title: "God + Max + Other Radom", category: "normal", desc: "Godhuman Melee & Other Random Items", basePrice: 1500 },
+                { title: "God + Max + T Rex Store", category: "normal", desc: "Godhuman Melee & T-Rex Fruit in Inventory / Store", basePrice: 2000 },
+                
+                // Fruits / Fruit စုံ
+                { title: "God + Max + 1 Mythical Inventory", category: "fruit", desc: "Godhuman Melee & 1 Mythical Fruit in Inventory", basePrice: 1800 },
+                { title: "God + Max + 3 Mythical", category: "fruit", desc: "Godhuman Melee & 3 Mythical Fruits in Inventory", basePrice: 3000 },
+                { title: "God + Max + Gas Inventory", category: "fruit", desc: "Godhuman Melee & Gas Fruit in Inventory", basePrice: 3000 },
+                { title: "God + Max + Dough Inventory", category: "fruit", desc: "Godhuman Melee & Dough Fruit in Inventory", basePrice: 3000 },
+                { title: "God + Max + Dough V2", category: "fruit", desc: "Godhuman Melee & Dough Fruit fully Awaken (V2)", basePrice: 6000 },
+                { title: "God + Max + Kit Eat", category: "fruit", desc: "Godhuman Melee & Kitsune Fruit Eaten (အကောင့်ထဲစားထားပြီး)", basePrice: 5500 },
+                { title: "God + Max + Tiger Inventory", category: "fruit", desc: "Godhuman Melee & Leopard (Tiger) Fruit in Inventory", basePrice: 4500 },
+                { title: "God + Max + Yeti Inventory", category: "fruit", desc: "Godhuman Melee & Yeti Fruit in Inventory", basePrice: 4500 },
+                { title: "God + Max + Kitsunae Inventory", category: "fruit", desc: "Godhuman Melee & Kitsune Fruit in Inventory", basePrice: 10000 },
+                
+                // Race V4
+                { title: "God + Max + CDK + Cyborg V4 T10", category: "v4", desc: "Cursed Dual Katana & Cyborg Race V4 (Tier 10 Full)", basePrice: 6800 },
+                { title: "God + Max + CDK + Shark V4 T10", category: "v4", desc: "Cursed Dual Katana & Shark Race V4 (Tier 10 Full)", basePrice: 6800 },
+                { title: "God + Max + CDK + Angel V4 T10", category: "v4", desc: "Cursed Dual Katana & Angel Race V4 (Tier 10 Full)", basePrice: 6800 },
+                { title: "God + Max + CDK + Ghoul V4 T10", category: "v4", desc: "Cursed Dual Katana & Ghoul Race V4 (Tier 10 Full)", basePrice: 6800 },
+                { title: "God + Max + CDK + Draco V4 T10", category: "v4", desc: "Cursed Dual Katana & Dragon (Draco) Race V4 (Tier 10 Full)", basePrice: 15000 },
+                { title: "God + Max + CDK + 6 Race V4 T10", category: "v4", desc: "Cursed Dual Katana & All 6 Races V4 (Tier 10 Full Full)", basePrice: 30000 }
+            ];
+
+            menuTemplates.forEach(menu => {
+                if (currentFilter !== 'all' && menu.category !== currentFilter) return;
+
+                const matchedStocks = allAccounts.filter(acc => acc.title === menu.title);
+                const availableStock = matchedStocks.filter(acc => acc.status === "available");
+                const soldStock = matchedStocks.filter(acc => acc.status === "sold");
+
+                const stockCount = availableStock.length;
+                const soldCount = soldStock.length;
+                
+                const nextAvailableAcc = stockCount > 0 ? availableStock[0] : null;
+                const currentPrice = nextAvailableAcc ? (nextAvailableAcc.price || menu.basePrice) : menu.basePrice;
+
+                const cardHTML = `
+                    <div class="account-card" data-category="${menu.category}">
+                        <div class="card-header-row">
+                            <h3 class="acc-title">${menu.title}</h3>
+                            <span class="level-badge">MAX LVL</span>
+                        </div>
+                        <ul class="acc-features">
+                            <li><i class="fa-solid fa-circle-check"></i> ${menu.desc}</li>
+                            <li style="color: #ffeb3b;"><i class="fa-solid fa-boxes-stacked" style="color:#ffeb3b;"></i> Stock လက်ကျန်: <b>${stockCount}</b> ခု</li>
+                            <li style="color: var(--success-green);"><i class="fa-solid fa-cart-shopping" style="color:var(--success-green);"></i> ရောင်းချပြီး: <b>${soldCount}</b> ခု</li>
+                        </ul>
+                        <div class="price-row">
+                            <span class="price-text">${currentPrice} ks</span>
+                            ${stockCount > 0 
+                                ? `<button class="buy-btn" onclick="processPurchase('${nextAvailableAcc.id}', '${menu.title}', ${currentPrice})">ဝယ်မည်</button>`
+                                : `<button class="buy-btn" style="background:#475569; cursor:not-allowed;" disabled>Stock ပြတ်နေသည်</button>`
+                            }
+                        </div>
+                    </div>
+                `;
+                shopGrid.innerHTML += cardHTML;
+            });
+        }
+
+        // ဝယ်ယူမှုအပိုင်း လုပ်ဆောင်ခြင်း
+        window.processPurchase = async function(accDocId, itemName, price) {
+            if(!currentUser) { alert("အကောင့်ဝယ်ယူရန်အတွက် ဦးစွာ Login ဝင်ပေးပါရန်။"); toggleAuthModal(true); return; }
+            await fetchAndUpdateUI();
+
+            if(userBalance < price) { alert("ဂိမ်းဒင်္ဂါးလက်ကျန် မလုံလောက်ပါ။ ငွေအရင်ဖြည့်ပေးပါရန်။"); changePage('topup'); return; }
+
+            if(confirm(`"${itemName}" ကို ${price} ks ဖြင့် ဝယ်ယူရန် သေချာပါသလား?`)) {
+                try {
+                    const accRef = doc(db, "accounts", accDocId);
+                    const accSnap = await getDoc(accRef);
+
+                    if(!accSnap.exists() || accSnap.data().status !== "available") {
+                        alert("စိတ်မရှိပါနဲ့ဗျာ၊ ဒီအကောင့်ကို တခြားသူတစ်ယောက်က ခုနလေးတင် ဝယ်သွားလို့ Stock ပြတ်သွားပါပြီ။");
+                        return;
+                    }
+
+                    const gameUser = accSnap.data().gameUser || "No User";
+                    const gamePass = accSnap.data().gamePass || "No Pass";
+
+                    const userRef = doc(db, "users", currentUser);
+                    let newBalance = userBalance - price;
+                    let orderData = { item: itemName, cost: price, accId: gameUser, accPw: gamePass, time: Date.now() };
+
+                    await updateDoc(userRef, {
+                        balance: newBalance,
+                        history: arrayUnion(orderData)
+                    });
+
+                    await updateDoc(accRef, {
+                        status: "sold",
+                        soldTo: currentUser,
+                        soldAt: Date.now()
+                    });
+
+                    document.getElementById('popUser').innerText = gameUser;
+                    document.getElementById('popPass').innerText = gamePass;
+                    document.getElementById('creditModal').classList.add('open');
+
+                    fetchAndUpdateUI();
+                } catch(err) { 
+                    console.error(err);
+                    alert("ဝယ်ယူမှု မအောင်မြင်ပါ။ စနစ်ချို့ယွင်းချက်ရှိနေသည်။"); 
+                }
+            }
+        }
+
+        // Navigation & Router
+        window.handleProfileClick = function() {
+            if (currentUser) {
+                if(confirm("အကောင့်ထဲမှ ထွက်ရန် သေချာပါသလား?")) {
+                    localStorage.removeItem('sessionUser');
+                    currentUser = null;
+                    fetchAndUpdateUI();
+                    changePage('home');
+                }
+            } else { toggleAuthModal(true); }
+        }
+
+        window.changePage = function(pageId) {
+            document.getElementById('page-home').style.display = pageId === 'home' ? 'block' : 'none';
+            document.getElementById('page-topup').style.display = pageId === 'topup' ? 'block' : 'none';
+            document.getElementById('page-history').style.display = pageId === 'history' ? 'block' : 'none';
+            document.querySelectorAll('.bottom-nav .nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById('btn-' + pageId).classList.add('active');
+        }
+
+        window.toggleAuthModal = function(show) {
+            const modal = document.getElementById('authModal');
+            if(show) { switchForm('login'); modal.classList.add('open'); } 
+            else { modal.classList.remove('open'); }
+        }
+
+        window.switchForm = function(type) {
+            document.getElementById('loginForm').classList.toggle('active', type === 'login');
+            document.getElementById('registerForm').classList.toggle('active', type === 'register');
+            document.getElementById('authTitle').innerText = type === 'login' ? "USER LOGIN" : "CREATE ACCOUNT";
+        }
+
+        // Register
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            let user = document.getElementById('regUser').value.trim();
+            let pass = document.getElementById('regPass').value;
+
+            try {
+                const userRef = doc(db, "users", user);
+                const userSnap = await getDoc(userRef);
+                if (userSnap.exists()) { alert("ဒီ Username က ရှိပြီးသားဖြစ်လို့ တခြားပြောင်းပေးပါဗျာ။"); return; }
+
+                await setDoc(userRef, { username: user, password: pass, balance: 0, history: [], createdAt: new Date() });
+                alert("အကောင့်ဖွင့်ခြင်း အောင်မြင်ပါသည်။ Login ဝင်နိုင်ပါပြီ။");
+                switchForm('login');
+            } catch (err) { alert("အကောင့်ဖွင့်ရတာ မအောင်မြင်ပါ။"); }
+        });
+
+        // Login
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            let user = document.getElementById('loginUser').value.trim();
+            let pass = document.getElementById('loginPass').value;
+
+            try {
+                const userRef = doc(db, "users", user);
+                const userSnap = await getDoc(userRef);
+                if (userSnap.exists() && userSnap.data().password === pass) {
+                    currentUser = user;
+                    localStorage.setItem('sessionUser', currentUser);
+                    await fetchAndUpdateUI();
+                    toggleAuthModal(false);
+                    alert("လော့ဂ်အင်ဝင်ရောက်မှု အောင်မြင်သည်!");
+                } else { alert("Username သို့မဟုတ် Password မှားယွင်းနေပါသည်။"); }
+            } catch (err) { alert("Login လုပ်ဆောင်ရတာ မအောင်မြင်ပါ။"); }
+        });
+
+        document.getElementById('receiptFile').addEventListener('change', function() {
+            if(this.files[0]) document.getElementById('file-status').innerText = this.files[0].name;
+        });
+
+        // Topup
+        document.getElementById('topupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if(!currentUser) { alert("ငွေမဖြည့်မီ အရင်ဆုံး Login ဝင်ပေးပါရန်။"); toggleAuthModal(true); return; }
+
+            let amt = parseInt(document.getElementById('topupAmount').value);
+            let method = document.getElementById('paymentMethod').value;
+            let fileInput = document.getElementById('receiptFile').files[0];
+
+            let reader = new FileReader();
+            reader.readAsDataURL(fileInput);
+            reader.onload = async function () {
+                let base64Img = reader.result;
+                let topupId = "TOPUP_" + Date.now();
+                
+                try {
+                    await setDoc(doc(db, "topups", topupId), {
+                        username: currentUser,
+                        amount: amt,
+                        method: method,
+                        receiptUrl: base64Img,
+                        status: "pending",
+                        timestamp: Date.now()
+                    });
+                    alert(`ငွေဖြည့်သွင်းမှု တင်ပြချက်ကို Database ထဲ ပို့ပြီးပါပြီ။\n\nစိစစ်ပြီးပါက ${amt} ks ကို Admin မှ ၅ မိနစ်အတွင်း အတည်ပြုပေးပါမည်။`);
+                    document.getElementById('topupForm').reset();
+                    document.getElementById('file-status').innerText = 'ငွေလွှဲပြေစာတင်ရန် (Upload Screenshot)';
+                    changePage('home');
+                } catch(err) { alert("ဒေတာလှမ်းပို့ရတာ မအောင်မြင်ပါ။"); }
+            };
+        });
+
+        // History
+        window.renderHistory = async function() {
+            const container = document.getElementById('historyLog');
+            if(!currentUser) { container.innerHTML = '<p style="color:var(--text-gray);">ကျေးဇူးပြု၍ Login အရင်ဝင်ပါ။</p>'; return; }
+
+            try {
+                const userRef = doc(db, "users", currentUser);
+                const userSnap = await getDoc(userRef);
+                if (!userSnap.exists()) return;
+
+                let historyList = userSnap.data().history || [];
+                container.innerHTML = '';
+
+                let threeDaysInMs = 3 * 24 * 60 * 60 * 1000;
+                let now = Date.now();
+                
+                let validHistory = historyList.filter(item => (now - item.time) < threeDaysInMs);
+                validHistory.sort((a, b) => b.time - a.time);
+
+                if(validHistory.length === 0) {
+                    container.innerHTML = '<p style="color:var(--text-gray);">ဝယ်ယူထားသော အမှတ်တရ မှတ်တမ်းမရှိသေးပါ။</p>';
+                    return;
+                }
+
+                validHistory.forEach(item => {
+                    let dateStr = new Date(item.time).toLocaleDateString();
+                    container.innerHTML += `
+                        <div class="history-card">
+                            <div class="history-header"><span>${item.item}</span><span>${dateStr}</span></div>
+                            <div style="font-size:0.9rem; margin-bottom:5px;">ကျသင့်ငွေ: <span style="color:var(--primary-pink);">${item.cost} ks</span></div>
+                            <div class="cred-box">
+                                <p>ID: <span>${item.accId}</span></p>
+                                <p>PW: <span>${item.accPw}</span></p>
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch(e) { console.error(e); }
+        }
+
+        // Filter Function
+        window.filterData = function(category) {
+            currentFilter = category;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            if(event) { event.target.classList.add('active'); }
+            renderShop(); 
+        }
+
+        // Boot
+        fetchAndUpdateUI();
+    </script>
+</body>
+</html>
