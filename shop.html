@@ -461,9 +461,10 @@
             document.getElementById('page-home').style.display = pageId === 'home' ? 'block' : 'none';
             document.getElementById('page-topup').style.display = pageId === 'topup' ? 'block' : 'none';
             document.getElementById('page-history').style.display = pageId === 'history' ? 'block' : 'none';
+            document.getElementById('page-more').style.display = pageId === 'more' ? 'block' : 'none'; 
             document.querySelectorAll('.bottom-nav .nav-item').forEach(el => el.classList.remove('active'));
             document.getElementById('btn-' + pageId).classList.add('active');
-                document.getElementById('btn-' + pageId).classList.add('active')
+                
         }
         
 
