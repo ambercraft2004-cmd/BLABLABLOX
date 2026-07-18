@@ -202,6 +202,25 @@
         <p style="font-size: 0.8rem; color: var(--text-gray); margin-bottom: 15px;">* ဝယ်ယူထားသော အကောင့်များကို ၃ ရက်တိတိ ပြသပေးထားမည် ဖြစ်သည်။</p>
         <div id="historyLog"></div>
     </div>
+    <!-- ဒီနေရာမှာ ထည့်ပါ -->
+<div id="page-more" style="display: none;" class="section-container">
+    <h2 style="font-family:'Orbitron'; margin: 15px 0; color:var(--primary-pink);">MORE SERVICES</h2>
+    <div style="display: grid; gap: 15px;">
+        <div class="account-card">
+            <h3 class="acc-title"><i class="fa-solid fa-gem" style="color:#ffeb3b;"></i> Robux ဝယ်ရန်</h3>
+            <a href="https://t.me/BlaBla_Admin" target="_blank" class="submit-btn" style="text-decoration:none; display:block; text-align:center;">Admin ထံဆက်သွယ်ရန်</a>
+        </div>
+        <div class="account-card">
+            <h3 class="acc-title"><i class="fa-solid fa-ticket" style="color:#00e676;"></i> Game Pass ဝယ်ရန်</h3>
+            <a href="https://t.me/BlaBla_Admin" target="_blank" class="submit-btn" style="text-decoration:none; display:block; text-align:center;">မှာယူရန်</a>
+        </div>
+        <div class="account-card">
+            <h3 class="acc-title"><i class="fa-solid fa-seedling" style="color:#4caf50;"></i> GROW A Garden 2</h3>
+            <a href="https://t.me/BlaBla_Admin" target="_blank" class="submit-btn" style="text-decoration:none; display:block; text-align:center;">ယခုပဲ ကြည့်ရှုမည်</a>
+        </div>
+    </div>
+</div>
+    
 
     <!-- ==================== AUTH POPUP MODAL ==================== -->
     <div class="modal-overlay" id="authModal">
@@ -444,7 +463,9 @@
             document.getElementById('page-history').style.display = pageId === 'history' ? 'block' : 'none';
             document.querySelectorAll('.bottom-nav .nav-item').forEach(el => el.classList.remove('active'));
             document.getElementById('btn-' + pageId).classList.add('active');
+                document.getElementById('btn-' + pageId).classList.add('active')
         }
+        
 
         window.toggleAuthModal = function(show) {
             const modal = document.getElementById('authModal');
