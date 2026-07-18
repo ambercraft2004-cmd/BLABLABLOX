@@ -246,14 +246,16 @@
             <button class="submit-btn" onclick="document.getElementById('creditModal').classList.remove('open')">သိရှိပါပြီ</button>
         </div>
     </div>
-
-    <nav class="bottom-nav">
-        <div class="nav-item active" id="btn-home" onclick="changePage('home')"><i class="fa-solid fa-house"></i><span>Home</span></div>
-        <div class="nav-item" id="btn-profile" onclick="handleProfileClick()"><i class="fa-solid fa-user"></i><span>Profile</span></div>
-        <div class="nav-item" id="btn-topup" onclick="changePage('topup')"><i class="fa-solid fa-wallet"></i><span>Topup</span></div>
-        <div class="nav-item" id="btn-history" onclick="changePage('history')"><i class="fa-solid fa-clock-rotate-left"></i><span>History</span></div>
-    </nav>
-
+    
+        <!-- နေရာ - Code အောက်ပိုင်းနားမှာ ရှိပါတယ် -->
+<nav class="bottom-nav">
+    <div class="nav-item active" id="btn-home" onclick="changePage('home')"><i class="fa-solid fa-house"></i><span>Home</span></div>
+    <div class="nav-item" id="btn-profile" onclick="handleProfileClick()"><i class="fa-solid fa-user"></i><span>Profile</span></div>
+    <div class="nav-item" id="btn-topup" onclick="changePage('topup')"><i class="fa-solid fa-wallet"></i><span>Topup</span></div>
+    <div class="nav-item" id="btn-history" onclick="changePage('history')"><i class="fa-solid fa-clock-rotate-left"></i><span>History</span></div>
+    <div class="nav-item" id="btn-more" onclick="changePage('more')"><i class="fa-solid fa-ellipsis"></i><span>More</span></div>
+</nav>
+        
     <!-- ==================== FIREBASE BACKEND INTEGRATION ==================== -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
